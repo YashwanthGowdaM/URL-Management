@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>URL Registry</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230e6b78'/%3E%3Cpath d='M9 16h14M17 10l6 6-6 6' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="shell">
+    <aside class="rail">
+      <div>
+        <h1>URL Registry</h1>
+        <p class="lede">Links to the tools, environments and services in use.</p>
+        <label class="search">
+          <span class="sr">Search links</span>
+          <input id="q" type="search" placeholder="Search label, URL or description" autocomplete="off" spellcheck="false">
+          <kbd aria-hidden="true">/</kbd>
+        </label>
+        <p id="count" class="count" aria-live="polite"></p>
+      </div>
+      <div id="session" class="session"></div>
+    </aside>
+
+    <main>
+      <div id="list" class="list"></div>
+    </main>
+  </div>
+
+  <p id="toast" class="toast" role="status" aria-live="polite"></p>
+
+  <dialog id="dlg-login" aria-labelledby="login-title">
+    <form id="f-cred" autocomplete="on">
+      <h2 id="login-title">Sign in</h2>
+      <p class="hint">Signing in lets you add, edit and delete links.</p>
+      <label>Username<input name="username" autocomplete="username" maxlength="64" required></label>
+      <label>Password<input name="password" type="password" autocomplete="current-password" maxlength="256" required></label>
+      <p class="err" role="alert"></p>
+      <div class="actions"><button type="button" data-close>Cancel</button><button class="primary">Continue</button></div>
+    </form>
+    <form id="f-totp" hidden>
+      <h2>Verify it's you</h2>
+      <div id="enroll" hidden>
+        <p class="hint">First sign-in: scan this code with an authenticator app, then enter the code it shows.</p>
+        <img id="qr" alt="Authenticator setup QR code" width="160" height="160">
+        <p class="hint">Can't scan? Enter this key manually: <span id="secret" class="secret"></span></p>
+      </div>
+      <p id="totp-hint" class="hint">Enter the 6-digit code from your authenticator app.</p>
+      <label>Authentication code<input name="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" required></label>
+      <p class="err" role="alert"></p>
+      <div class="actions"><button type="button" data-close>Cancel</button><button class="primary">Sign in</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="dlg-link" aria-labelledby="link-title">
+    <form id="f-link">
+      <h2 id="link-title">Add link</h2>
+      <label>Label<input name="label" maxlength="80" placeholder="What the link is used for" required></label>
+      <label>URL<input name="url" type="url" maxlength="2048" placeholder="https://" required></label>
+      <label>Short description<textarea name="description" rows="3" maxlength="300" required></textarea></label>
+      <p class="err" role="alert"></p>
+      <div class="actions"><button type="button" data-close>Cancel</button><button class="primary">Save link</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="dlg-delete" aria-labelledby="del-title">
+    <form id="f-delete">
+      <h2 id="del-title">Delete link</h2>
+      <p id="del-text" class="hint"></p>
+      <p class="err" role="alert"></p>
+      <div class="actions"><button type="button" data-close>Keep link</button><button class="danger">Delete link</button></div>
+    </form>
+  </dialog>
+</body>
+</html>

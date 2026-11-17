@@ -1,0 +1,28 @@
+services:
+  app:
+    image: ${IMAGE:?set IMAGE in .env}
+    restart: unless-stopped
+    init: true
+    env_file: .env
+    volumes:
+      - registry-data:/data
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    expose: ["3000"]
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports: ["80:80", "443:443"]
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on: [app]
+
+volumes:
+  registry-data:
+  caddy-data:
+  caddy-config:
